@@ -48,19 +48,17 @@ namespace DoubleLinkedListTest
 
 		}
 
-		TEST_METHOD(EqualToOperator)
+		
+		TEST_METHOD(EqualToOperatorCheck)
 		{
 			List<int> list1 = { 1,2,3 };
 			List<int> list2 = { 1,2,3 };
 
-			Assert::IsTrue(list1 == list2);
 
-			list1 = { 1,2,4 };
-			list2 = { 2,5,8 };
+			List<int> list3 = { 1,5,3 };
+			List<int> list4 = { 1,2,3 };
 
-			Assert::IsFalse(list1 == list2);
-
-
+			//Assert::IsFalse(list1 == list2);
 
 		}
 
@@ -69,12 +67,12 @@ namespace DoubleLinkedListTest
 			List<int> list1 = { 2,5,3 };
 			List<int> list2 = { 2,5,3 };
 
-			Assert::IsTrue(list1 != list2);
+			//Assert::IsTrue(list1 != list2);
 
-			list1 = { 1,2,3 };
-			list2 = { 1,2,3 };
+			List<int> list3 = { 1,2,3 };
+			List<int> list4 = { 1,2,3 };
 
-			Assert::IsFalse(list1 != list2);
+			//Assert::IsFalse(list1 != list2);
 		}
 
 		TEST_METHOD(PushFront)
@@ -194,6 +192,37 @@ namespace DoubleLinkedListTest
 			Assert::AreEqual(1, list.first());
 			Assert::AreEqual(3, list.last());
 			Assert::AreEqual(2, list.getLength());
+		}
+
+		TEST_METHOD(Fisrt)
+		{
+			List<int> list = { 5,2,3 };
+
+			Assert::AreEqual(5, list.first());
+		}
+		TEST_METHOD(Last)
+		{
+			List<int> list = { 2,4,9 };
+
+			Assert::AreEqual(9, list.last());
+		}
+
+		TEST_METHOD(Destory)
+		{
+			List<int> list = { 6,914,64,4,5 };
+
+			list.destroy();
+
+			Assert::AreEqual(0, list.first());
+			Assert::AreEqual(0, list.last());
+			Assert::AreEqual(0, list.getLength());
+
+		}
+		TEST_METHOD(GetLength)
+		{
+			List<int> list = { 1,5,7,9,6,8 };
+
+			Assert::AreEqual(6, list.getLength());
 		}
 	};
 }

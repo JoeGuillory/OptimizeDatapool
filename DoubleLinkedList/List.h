@@ -84,16 +84,21 @@ inline List<T>& List<T>::operator=(const List<T> other)
 template<typename T>
 inline const bool List<T>::operator==(const List<T> other)
 {
-	for (auto t = this->begin(); t != this->end(); t++)
+	if (m_length != other.getLength())
+		return false;
+
+
+	Iterator<T> iter;
+	Iterator<T> iter2;
+	iter = begin();
+	iter2 = other.begin();
+
+	while (iter != nullptr)
 	{
-		for (auto j = other->begin(); j != other.end(); j++)
-		{
-			if (*t != *j)
-				return false;
-
-
-
-		}
+		if (*iter != *iter2)
+			return false;
+		iter++;
+		iter2++;
 	}
 	return true;
 }
@@ -101,14 +106,28 @@ inline const bool List<T>::operator==(const List<T> other)
 template<typename T>
 inline const bool List<T>::operator!=(const List<T> other)
 {
-	for (auto t = this->begin(); t != this->end(); t++)
+
+	if (m_length != other.getLength())
+		return true;
+	if (m_head != other.m_head)
+		return true;
+	if (m_tail != other.m_tail)
+		return true;
+
+	Iterator<T> iter;
+	Iterator<T> iter2;
+	iter = begin();
+	iter2 = other.begin();
+	iter++;
+	iter2++;
+	while (iter != m_tail)
 	{
-		for (auto j = other->begin(); j != other.end(); j++)
-		{
-			if (*t == *j)
-				return false;
-		}
+		if (*iter != *iter2)
+			return true;
+		iter++;
+		iter2++;
 	}
+
 	return true;
 }
 
@@ -212,7 +231,7 @@ inline bool List<T>::insert(const T& value, int index)
 		return true;
 	}
 	
-	if (index == m_length - 1)
+	if (index == m_length-1)
 	{
 		pushBack(value);
 		return true;
