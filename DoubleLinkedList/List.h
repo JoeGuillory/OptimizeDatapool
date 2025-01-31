@@ -11,8 +11,8 @@ public:
 	~List<T>();
 
 	List<T>& operator=(const List<T> other);
-	List<T>& operator==(const List<T> other);
-	List<T>& operator!=(const List<T> other);
+	const bool operator==(const List<T> other);
+	const bool operator!=(const List<T> other);
 
 	void pushFront(const T& value);
 	void pushBack(const T& value);
@@ -68,22 +68,27 @@ inline List<T>& List<T>::operator=(const List<T> other)
 {
 
 	destroy();
+
 	for (auto t = other.begin(); t != other.end(); t++)
 	{
-		pushBack(t&);
+		auto value = *t;
+		pushBack(value);
 
 	}
+	auto value = other.last();
+	pushBack(value);
+	
 	return *this;
 }
 
 template<typename T>
-inline List<T>& List<T>::operator==(const List<T> other)
+inline const bool List<T>::operator==(const List<T> other)
 {
 	for (auto t = this->begin(); t != this->end(); t++)
 	{
 		for (auto j = other->begin(); j != other.end(); j++)
 		{
-			if (t & != j&)
+			if (*t != *j)
 				return false;
 
 
@@ -94,13 +99,13 @@ inline List<T>& List<T>::operator==(const List<T> other)
 }
 
 template<typename T>
-inline List<T>& List<T>::operator!=(const List<T> other)
+inline const bool List<T>::operator!=(const List<T> other)
 {
 	for (auto t = this->begin(); t != this->end(); t++)
 	{
 		for (auto j = other->begin(); j != other.end(); j++)
 		{
-			if (t & == j&)
+			if (*t == *j)
 				return false;
 		}
 	}
@@ -198,7 +203,7 @@ inline T List<T>::popBack()
 template<typename T>
 inline bool List<T>::insert(const T& value, int index)
 {
-	if (index < 0 || index >= m_length)
+	if (index < 0 || index > m_length)
 		return false;
 
 	if (!m_tail || index == 0)
@@ -214,7 +219,7 @@ inline bool List<T>::insert(const T& value, int index)
 	}
 
 	Node<T>* node = m_head;
-	for (int i = 0; i < index; i++)
+	for (int i = 0; i < index + 1; i++)
 	{
 		if (node->next == nullptr)
 			return false;
@@ -251,11 +256,9 @@ inline bool List<T>::remove(const T& value)
 		return true;
 	}
 
-	if (m_length <= 2)
-		return false;
 
 	Node<T>* node = m_head->next;
-	while (node != m_tail->previous)
+	while (node != m_tail)
 	{
 		if (node->value == value)
 		{
