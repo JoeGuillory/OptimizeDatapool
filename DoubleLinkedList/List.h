@@ -10,6 +10,10 @@ public:
 	List<T>(std::initializer_list<T> list);
 	~List<T>();
 
+	List<T>& operator=(const List<T> other);
+	List<T>& operator==(const List<T> other);
+	List<T>& operator!=(const List<T> other);
+
 	void pushFront(const T& value);
 	void pushBack(const T& value);
 	T popFront();
@@ -57,6 +61,50 @@ inline List<T>::~List()
 	m_head = nullptr;
 	delete m_tail;
 	m_tail = nullptr;
+}
+
+template<typename T>
+inline List<T>& List<T>::operator=(const List<T> other)
+{
+
+	destroy();
+	for (auto t = other.begin(); t != other.end(); t++)
+	{
+		pushBack(t&);
+
+	}
+	return *this;
+}
+
+template<typename T>
+inline List<T>& List<T>::operator==(const List<T> other)
+{
+	for (auto t = this->begin(); t != this->end(); t++)
+	{
+		for (auto j = other->begin(); j != other.end(); j++)
+		{
+			if (t & != j&)
+				return false;
+
+
+
+		}
+	}
+	return true;
+}
+
+template<typename T>
+inline List<T>& List<T>::operator!=(const List<T> other)
+{
+	for (auto t = this->begin(); t != this->end(); t++)
+	{
+		for (auto j = other->begin(); j != other.end(); j++)
+		{
+			if (t & == j&)
+				return false;
+		}
+	}
+	return true;
 }
 
 template<typename T>

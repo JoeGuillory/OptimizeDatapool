@@ -17,6 +17,7 @@ public:
 	const bool operator==(const Iterator<T>& other) const;
 	const bool operator!=(const Iterator<T>& other) const;
 
+
 private:
 	Node<T>* m_current;
 };
