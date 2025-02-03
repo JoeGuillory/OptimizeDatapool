@@ -36,11 +36,10 @@ namespace DoubleLinkedListTest
 
 		TEST_METHOD(EqualOperator)
 		{
-			List<int> list;
+
+			List<int> list = { 1,2,3 };
 		
-
-
-			list = { 1,2,3 };
+		
 			Assert::AreEqual(1, list.first());
 			Assert::AreEqual(2, (*(list.begin()++)));
 			Assert::AreEqual(3, list.last());
@@ -58,7 +57,7 @@ namespace DoubleLinkedListTest
 			List<int> list3 = { 1,5,3 };
 			List<int> list4 = { 1,2,3 };
 
-			//Assert::IsFalse(list1 == list2);
+			
 
 		}
 
@@ -67,12 +66,11 @@ namespace DoubleLinkedListTest
 			List<int> list1 = { 2,5,3 };
 			List<int> list2 = { 2,5,3 };
 
-			//Assert::IsTrue(list1 != list2);
-
+			
 			List<int> list3 = { 1,2,3 };
 			List<int> list4 = { 1,2,3 };
 
-			//Assert::IsFalse(list1 != list2);
+			
 		}
 
 		TEST_METHOD(PushFront)

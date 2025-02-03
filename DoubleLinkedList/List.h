@@ -75,9 +75,6 @@ inline List<T>& List<T>::operator=(const List<T> other)
 		pushBack(value);
 
 	}
-	auto value = other.last();
-	pushBack(value);
-	
 	return *this;
 }
 
@@ -325,7 +322,7 @@ inline Iterator<T> List<T>::end() const
 {
 	if(!m_tail)
 		return Iterator<T>();
-	return Iterator<T>(m_tail);
+	return Iterator<T>(m_tail->next);
 }
 
 template<typename T>
