@@ -19,7 +19,8 @@ public:
 	T popFront();
 	T popBack();
 	bool insert(const T& value, int index);
-	bool remove(const T& value);
+	int remove(const T& value);
+	void removeall();
 	T first() const;
 	T last() const;
 	Iterator<T> begin() const;
@@ -106,17 +107,15 @@ inline const bool List<T>::operator!=(const List<T> other)
 
 	if (m_length != other.getLength())
 		return true;
-	if (m_head != other.m_head)
+	if (m_head->value != other.m_head->value)
 		return true;
-	if (m_tail != other.m_tail)
+	if (m_tail->value != other.m_tail->value)
 		return true;
 
 	Iterator<T> iter;
 	Iterator<T> iter2;
 	iter = begin();
 	iter2 = other.begin();
-	iter++;
-	iter2++;
 	while (iter != m_tail)
 	{
 		if (*iter != *iter2)
@@ -125,7 +124,7 @@ inline const bool List<T>::operator!=(const List<T> other)
 		iter2++;
 	}
 
-	return true;
+	return false;
 }
 
 template<typename T>
@@ -133,7 +132,7 @@ inline void List<T>::pushFront(const T& value)
 {
 	Node<T>* newNode = new Node<T>(value);
 	m_length++;
-	
+
 	if (!m_tail)
 	{
 		m_head = newNode;
@@ -169,7 +168,7 @@ inline T List<T>::popFront()
 {
 	if (!m_tail)
 		return T();
-	
+
 	T value = m_head->value;
 
 
@@ -193,7 +192,7 @@ inline T List<T>::popFront()
 template<typename T>
 inline T List<T>::popBack()
 {
-	if (!m_tail)
+	if (m_tail == nullptr)
 		return T();
 
 	T value = m_tail->value;
@@ -209,7 +208,8 @@ inline T List<T>::popBack()
 	else
 	{
 		m_tail = m_tail->previous;
-		delete m_tail->next;
+		if (!m_tail->next)
+			delete m_tail->next;
 		m_tail->next = nullptr;
 		m_length--;
 	}
@@ -227,8 +227,8 @@ inline bool List<T>::insert(const T& value, int index)
 		pushFront(value);
 		return true;
 	}
-	
-	if (index == m_length-1)
+
+	if (index == m_length - 1)
 	{
 		pushBack(value);
 		return true;
@@ -252,43 +252,62 @@ inline bool List<T>::insert(const T& value, int index)
 }
 
 template<typename T>
-inline bool List<T>::remove(const T& value)
+inline int List<T>::remove(const T& value)
 {
+
+
 	if (!m_tail)
-		return false;
-
-	if (m_head->value == value)
-	{
-		popFront();
-		return true;
-	}
-
-	if (!m_head->next)
-		return false;
-
-	if (m_tail->value == value)
-	{
-		popBack();
-		return true;
-	}
+		return 0;
 
 
-	Node<T>* node = m_head->next;
-	while (node != m_tail)
+	int count = 0;
+	Node<T>* node = m_head;
+	while (node && m_tail && node != m_tail->next)
 	{
 		if (node->value == value)
 		{
-			node->previous->next = node->next;
-			node->next->previous = node->previous;
-			m_length--;
-			delete node;
-			node = nullptr;
-			return true;
-		}
-		node = node->next;
-	}
-	return false;
+			if (node != m_head)
+			{
+				node->previous->next = node->next;
+			}
+			else
+			{
+				popFront();
+				node = m_head;
+				count++;
+				continue;
+			}
+			if (node != m_tail)
+			{
+				node->next->previous = node->previous;
+				Node<T>* temp = node;
+				node = node->next;
+				delete temp;
+				m_length--;
+				count++;
+			}
+			else
+			{
+				popBack();
+				node = m_tail;
+				count++;
+				continue;
+			}
 
+		}
+		else
+		{
+			node = node->next;
+		}
+
+	}
+	return count;
+
+}
+
+template<typename T>
+inline void List<T>::removeall()
+{
 }
 
 template<typename T>
@@ -312,7 +331,7 @@ inline T List<T>::last() const
 template<typename T>
 inline Iterator<T> List<T>::begin() const
 {
-	if(!m_head)
+	if (!m_head)
 		return Iterator<T>();
 	return Iterator<T>(m_head);
 }
@@ -320,7 +339,7 @@ inline Iterator<T> List<T>::begin() const
 template<typename T>
 inline Iterator<T> List<T>::end() const
 {
-	if(!m_tail)
+	if (!m_tail)
 		return Iterator<T>();
 	return Iterator<T>(m_tail->next);
 }
@@ -328,7 +347,7 @@ inline Iterator<T> List<T>::end() const
 template<typename T>
 inline void List<T>::destroy()
 {
-	if (!m_tail)
+	if (m_tail == nullptr)
 		return;
 
 	for (int i = 0; i < m_length; i++)

@@ -12,6 +12,7 @@ namespace DoubleLinkedListTest
 		TEST_METHOD(DefualtConstructor)
 		{
 			List<int> list;
+			Assert::IsNotNull(&list);
 			Assert::AreEqual(0, list.first());
 			Assert::AreEqual(0,list.last());
 			Assert::AreEqual(0, list.getLength());
@@ -20,7 +21,8 @@ namespace DoubleLinkedListTest
 		TEST_METHOD(InitializerListConstructor)
 		{
 			List<int> list = { 9,8,7,6,5 };
-
+			Assert::IsNotNull(&list);
+			Assert::AreEqual(5, list.getLength());
 			Iterator<int> iter = list.begin();
 			Assert::AreEqual(9, *iter);
 			iter++;
@@ -38,8 +40,8 @@ namespace DoubleLinkedListTest
 		{
 
 			List<int> list = { 1,2,3 };
-		
-		
+			Assert::IsNotNull(&list);
+			Assert::AreEqual(3, list.getLength());
 			Assert::AreEqual(1, list.first());
 			Assert::AreEqual(2, (*(list.begin()++)));
 			Assert::AreEqual(3, list.last());
@@ -52,12 +54,16 @@ namespace DoubleLinkedListTest
 		{
 			List<int> list1 = { 1,2,3 };
 			List<int> list2 = { 1,2,3 };
-
+			Assert::IsNotNull(&list1);
+			Assert::AreEqual(3, list1.getLength());
+			Assert::IsNotNull(&list2);
+			Assert::AreEqual(3, list2.getLength());
 
 			List<int> list3 = { 1,5,3 };
 			List<int> list4 = { 1,2,3 };
 
-			
+			Assert::IsTrue(list1 == list2);
+			Assert::IsFalse(list3 == list4);
 
 		}
 
@@ -67,10 +73,11 @@ namespace DoubleLinkedListTest
 			List<int> list2 = { 2,5,3 };
 
 			
-			List<int> list3 = { 1,2,3 };
-			List<int> list4 = { 1,2,3 };
-
+			List<int> list3 = { 2,2,3 };
+			List<int> list4 = { 1,3,3 };
 			
+			Assert::IsFalse(list1 != list2);
+			Assert::IsTrue(list3 != list4);
 		}
 
 		TEST_METHOD(PushFront)
@@ -183,13 +190,75 @@ namespace DoubleLinkedListTest
 		}
 		TEST_METHOD(Remove)
 		{
-			List<int> list = { 1,2,3 };
+			List<int> list{};
+			Assert::IsNotNull(&list);
 
-			list.remove(2);
+			list.pushBack(1);
+			list.pushBack(0);
+			list.pushBack(1);
+			list.pushBack(2);
+			list.pushBack(1);
+			list.pushBack(3);
+			list.pushBack(1);
+			Assert::AreEqual(7, list.getLength());
+			Iterator<int> iter = list.begin();
+			Assert::AreEqual(1, *iter);
+			iter++;
+			Assert::AreEqual(0, *iter);
+			iter++;
+			Assert::AreEqual(1, *iter);
+			iter++;
+			Assert::AreEqual(2, *iter);
+			iter++;
+			Assert::AreEqual(1, *iter);
+			iter++;
+			Assert::AreEqual(3, *iter);
+			iter++;
+			Assert::AreEqual(1, *iter);
 
-			Assert::AreEqual(1, list.first());
-			Assert::AreEqual(3, list.last());
-			Assert::AreEqual(2, list.getLength());
+
+			int count = list.remove(1);
+			Assert::AreEqual(4, count);
+			Assert::AreEqual(3, list.getLength());
+			iter = list.begin();
+			Assert::AreEqual(*iter, list.first());
+			Assert::AreEqual(0, *iter);
+			iter++;
+			Assert::AreEqual(2, *iter);
+			iter++;
+			Assert::AreEqual(3, *iter);
+			iter++;
+			Assert::IsTrue(iter == nullptr);
+
+
+			count = list.remove(5);
+			Assert::AreEqual(0, count);
+			Assert::AreEqual(3, list.getLength());
+			iter = list.begin();
+			Assert::AreEqual(0, *iter);
+			iter++;
+			Assert::AreEqual(2, *iter);
+			iter++;
+			Assert::AreEqual(3, *iter);
+
+
+			list = List<int>();
+			Assert::IsNotNull(&list);
+			list.pushBack(3);
+			list.pushBack(3);
+			list.pushBack(3);
+			Assert::AreEqual(3, list.getLength());
+			iter = list.begin();
+			Assert::AreEqual(3, *iter);
+			iter++;
+			Assert::AreEqual(3, *iter);
+			iter++;
+			Assert::AreEqual(3, *iter);
+			list.remove(3);
+			count = list.remove(3);
+			Assert::AreEqual(0, list.getLength());
+			Assert::AreEqual(0, list.first());
+			Assert::AreEqual(0, list.last());
 		}
 
 		TEST_METHOD(Fisrt)
