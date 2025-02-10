@@ -261,7 +261,7 @@ namespace DoubleLinkedListTest
 			Assert::AreEqual(0, list.last());
 		}
 
-		TEST_METHOD(Fisrt)
+		TEST_METHOD(First)
 		{
 			List<int> list = { 5,2,3 };
 
@@ -277,7 +277,7 @@ namespace DoubleLinkedListTest
 		TEST_METHOD(Destory)
 		{
 			List<int> list = { 6,914,64,4,5 };
-
+			Assert::IsNotNull(&list);
 			list.destroy();
 
 			Assert::AreEqual(0, list.first());
@@ -288,7 +288,7 @@ namespace DoubleLinkedListTest
 		TEST_METHOD(GetLength)
 		{
 			List<int> list = { 1,5,7,9,6,8 };
-
+			Assert::IsNotNull(&list);
 			Assert::AreEqual(6, list.getLength());
 		}
 	};
