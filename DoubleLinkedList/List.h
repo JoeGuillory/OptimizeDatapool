@@ -20,7 +20,6 @@ public:
 	T popBack();
 	bool insert(const T& value, int index);
 	int remove(const T& value);
-	void removeall();
 	T first() const;
 	T last() const;
 	Iterator<T> begin() const;
@@ -305,10 +304,7 @@ inline int List<T>::remove(const T& value)
 
 }
 
-template<typename T>
-inline void List<T>::removeall()
-{
-}
+
 
 template<typename T>
 inline T List<T>::first() const
